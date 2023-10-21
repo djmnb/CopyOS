@@ -1,14 +1,17 @@
 [bits 32]
 
 global _start
-extern kernel_int
+extern kernel_init
 
-_start:
+_start: 
+   
+   mov ax,10
+   mov bx,11
 
-    
-   call kernel_int
 
-    jmp $
+   call kernel_init
+
+   jmp $
 
 
 print:

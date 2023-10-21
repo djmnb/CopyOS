@@ -20,7 +20,7 @@ mov bl, 4; 扇区数量
 
 call read_disk
 
-cmp word [0x1000], 0x55AA
+cmp word [0x1000], 0x55aa
 jnz error
 
 jmp 0:0x1002
@@ -98,8 +98,6 @@ read_disk:
             loop .readw
         ret
 
-
-
 print:
     mov ah, 0x0e
 .next:
@@ -113,7 +111,7 @@ print:
     ret
 
 booting:
-    db "Booting HardOs...", 10, 13, 0; \n\r
+    db "Booting Onix...", 10, 13, 0; \n\r
 
 error:
     mov si, .msg
