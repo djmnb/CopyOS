@@ -1,11 +1,8 @@
-[bits 32]
-
-section .text
-
+;假设是从a切换到b
 global task_switch
 task_switch:
-    push ebp
-    mov ebp, esp
+    push ebp  ; sp -= 4  来到了程序栈顶
+    mov ebp, esp ; 记录程序 进来时栈的指针 - 4   
 
     push ebx
     push esi
