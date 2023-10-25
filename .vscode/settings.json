@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "io.h": "c",
-        "console.h": "c"
+        "console.h": "c",
+        "string.h": "c",
+        "types.h": "c"
     }
 }

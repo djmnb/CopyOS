@@ -11,20 +11,6 @@ char *strcpy(char *dest, const char *src)
     }
 }
 
-char *strncpy(char *dest, const char *src, size_t count)
-{
-    char *ptr = dest;
-    size_t nr = 0;
-    for (; nr < count; nr++)
-    {
-        *ptr++ = *src;
-        if (*src++ == EOS)
-            return dest;
-    }
-    dest[count - 1] = EOS;
-    return dest;
-}
-
 char *strcat(char *dest, const char *src)
 {
     char *ptr = dest;
@@ -40,16 +26,6 @@ char *strcat(char *dest, const char *src)
             return dest;
         }
     }
-}
-
-size_t strnlen(const char *str, size_t maxlen)
-{
-    char *ptr = (char *)str;
-    while (*ptr != EOS && maxlen--)
-    {
-        ptr++;
-    }
-    return ptr - str;
 }
 
 size_t strlen(const char *str)
@@ -109,14 +85,11 @@ int memcmp(const void *lhs, const void *rhs, size_t count)
 {
     char *lptr = (char *)lhs;
     char *rptr = (char *)rhs;
-    while ((count > 0) && *lptr == *rptr)
+    while (*lptr == *rptr && count-- > 0)
     {
         lptr++;
         rptr++;
-        count--;
     }
-    if (count == 0)
-        return 0;
     return *lptr < *rptr ? -1 : *lptr > *rptr;
 }
 
@@ -150,44 +123,5 @@ void *memchr(const void *str, int ch, size_t count)
             return (void *)ptr;
         }
         ptr++;
-    }
-}
-
-#define SEPARATOR1 '/'                                       // 目录分隔符 1
-#define SEPARATOR2 '\\'                                      // 目录分隔符 2
-#define IS_SEPARATOR(c) (c == SEPARATOR1 || c == SEPARATOR2) // 字符是否位目录分隔符
-
-// 获取第一个分隔符
-char *strsep(const char *str)
-{
-    char *ptr = (char *)str;
-    while (true)
-    {
-        if (IS_SEPARATOR(*ptr))
-        {
-            return ptr;
-        }
-        if (*ptr++ == EOS)
-        {
-            return NULL;
-        }
-    }
-}
-
-// 获取最后一个分隔符
-char *strrsep(const char *str)
-{
-    char *last = NULL;
-    char *ptr = (char *)str;
-    while (true)
-    {
-        if (IS_SEPARATOR(*ptr))
-        {
-            last = ptr;
-        }
-        if (*ptr++ == EOS)
-        {
-            return last;
-        }
     }
 }

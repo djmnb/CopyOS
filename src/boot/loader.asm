@@ -1,8 +1,6 @@
 [org 0x1000]
 
-dd 0x55aa; 魔数，用于判断错误
-
-kernel_size: dd KERNEL_SIZE; 内核大小
+dw 0x55aa; 魔数，用于判断错误
 
 ; 打印字符串
 mov si, loading
@@ -36,7 +34,7 @@ detect_memory:
     add di, cx
 
     ; 将结构体数量加一
-    inc dword [ards_count]
+    inc word [ards_count]
 
     cmp ebx, 0
     jnz .next
@@ -106,33 +104,13 @@ protect_mode:
 
     mov esp, 0x10000; 修改栈顶
 
-    sub esp, 4 * 3; 三个变量
-    mov dword [esp], 0; 读出的数量
-    mov dword [esp + 4], 10     ; ecx 初始扇区位置
-    mov dword [esp + 8], 0x18000; edi 目标内存位置
-    BLOCK_SIZE equ 200          ; 一次读取的扇区数量
+    mov edi, 0x10000; 读取的目标内存
+    mov ecx, 10; 起始扇区
+    mov bl, 200; 扇区数量
 
-.read_block:
+    call read_disk
 
-    mov edi, [esp + 8]  ; 读取的目标内存
-    mov ecx, [esp + 4]  ; 起始扇区
-    mov bl, BLOCK_SIZE  ; 扇区数量
-
-    call read_disk ; 读取内核
-
-    add dword [esp + 8], BLOCK_SIZE * 512  ; edi 目标内存位置
-    add dword [esp + 4], BLOCK_SIZE        ; ecx 初始扇区位置
-
-    mov eax, [kernel_size]
-    add dword [esp], BLOCK_SIZE * 512
-    cmp dword [esp], eax; 判断已读数量与 kernel_size 的大小
-
-    jl .read_block
-
-    mov eax, 0x20220205; 内核魔数
-    mov ebx, ards_count; ards 数量指针
-
-    jmp dword code_selector:0x20000
+    jmp dword code_selector:0x10000
 
     ud2; 表示出错
 
@@ -240,6 +218,6 @@ gdt_data:
 gdt_end:
 
 ards_count:
-    dd 0
+    dw 0
 ards_buffer:
 
