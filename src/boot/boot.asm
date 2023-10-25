@@ -15,7 +15,7 @@ mov si, booting
 call print
 
 mov edi, 0x1000; 读取的目标内存
-mov ecx, 1; 起始扇区
+mov ecx, 2; 起始扇区
 mov bl, 4; 扇区数量
 
 call read_disk
@@ -23,7 +23,7 @@ call read_disk
 cmp word [0x1000], 0x55aa
 jnz error
 
-jmp 0:0x1002
+jmp 0:0x1008
 
 ; 阻塞
 jmp $

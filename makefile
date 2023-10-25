@@ -33,6 +33,7 @@ $(BUILD)/kernel.bin: $(BUILD)/kernel/start.o \
 	$(BUILD)/kernel/main.o \
 	$(BUILD)/kernel/io.o \
 	$(BUILD)/lib/string.o \
+	$(BUILD)/kernel/console.o \
 
 	$(shell mkdir -p $(dir $@))
 	ld -m elf_i386 -static $(DEBUG) $^ -o $@ -Ttext $(ENTRYPOINT)
@@ -70,3 +71,6 @@ debug: $(BUILD)/master.img
 	LTDL_LIBRARY_PATH=/usr/local/bochs-gdb/lib/bochs/plugins \
 	BXSHARE=/usr/local/bochs-gdb/share/bochs \
 	bochs-gdb -q -f $(WORKDIR)/bochs/bochsrc-gdb
+
+vdk: $(BUILD)/master.img
+	qemu-img convert -f raw -O vmdk $< $(basename $<).vmdk

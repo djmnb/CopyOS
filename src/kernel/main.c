@@ -1,29 +1,65 @@
-#include <onix/onix.h>
-#include <onix/types.h>
-#include <onix/io.h>
+#include <onix/interrupt.h>
 
-// - CRT 地址寄存器 0x3D4
-// - CRT 数据寄存器 0x3D5
-// - CRT 光标位置 - 高位 0xE
-// - CRT 光标位置 - 低位 0xF
+extern void tss_init();
+extern void memory_map_init();
+extern void mapping_init();
+extern void arena_init();
 
-#define CRT_ADDR_REG 0x3d4
-#define CRT_DATA_REG 0x3d5
+extern void interrupt_init();
+extern void clock_init();
+extern void timer_init();
+extern void syscall_init();
+extern void task_init();
+extern void fpu_init();
+extern void pci_init();
 
-#define CRT_CURSOR_H 0xe
-#define CRT_CURSOR_L 0xf
+extern void pbuf_init();
+extern void netif_init();
+extern void loopif_init();
+extern void eth_init();
+extern void arp_init();
+extern void ip_init();
+extern void icmp_init();
+extern void udp_init();
+extern void tcp_init();
+
+extern void dhcp_init();
+
+extern void socket_init();
+extern void pkt_init();
+extern void raw_init();
 
 void kernel_init()
 {
-    outb(CRT_ADDR_REG, CRT_CURSOR_H);
-    u16 pos = inb(CRT_DATA_REG) << 8;
-    outb(CRT_ADDR_REG, CRT_CURSOR_L);
-    pos |= inb(CRT_DATA_REG);
+    tss_init();        // 初始化任务状态段
+    memory_map_init(); // 初始化物理内存数组
+    mapping_init();    // 初始化内存映射
+    arena_init();      // 初始化内核堆内存
 
-    outb(CRT_ADDR_REG, CRT_CURSOR_H);
-    outb(CRT_DATA_REG, 0);
-    outb(CRT_ADDR_REG, CRT_CURSOR_L);
-    outb(CRT_DATA_REG, 123);
+    interrupt_init(); // 初始化中断
+    timer_init();     // 初始化定时器
+    clock_init();     // 初始化时钟
+    fpu_init();       // 初始化 FPU 浮点运算单元
+    pci_init();       // 初始化 PCI 总线
 
-    return;
+    syscall_init(); // 初始化系统调用
+    task_init();    // 初始化任务
+
+    pbuf_init();   // 初始化 pbuf
+    netif_init();  // 初始化 netif
+    loopif_init(); // 初始化 loopif
+    eth_init();    // 初始化 Ethernet 协议
+    arp_init();    // 初始化 ARP 协议
+    ip_init();     // 初始化 IP 协议
+    icmp_init();   // 初始化 ICMP 协议
+    udp_init();    // 初始化 UDP 协议
+    tcp_init();    // 初始化 TCP 协议
+
+    dhcp_init(); // 初始化 DHCP 协议
+
+    socket_init(); // 初始化 socket
+    pkt_init();    // 初始化 pkt
+    raw_init();    // 初始化原始套接字
+
+    set_interrupt_state(true);
 }
