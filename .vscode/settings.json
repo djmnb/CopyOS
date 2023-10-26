@@ -3,6 +3,8 @@
         "io.h": "c",
         "console.h": "c",
         "string.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "task.h": "c",
+        "stdlib.h": "c"
     }
 }

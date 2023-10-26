@@ -8,14 +8,14 @@
 #include <onix/debug.h>
 #include <onix/global.h>
 #include <onix/task.h>
+#include <onix/interrupt.h>
+#include <onix/stdlib.h>
 
 void kernel_init()
 {
     console_init();
     gdt_init();
-    // task_init();
     interrupt_init();
-    int i = 1 / 0;
-
+    task_init();
     return;
 }
