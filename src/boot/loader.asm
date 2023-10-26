@@ -6,7 +6,7 @@ dw 0x55aa; 魔数，用于判断错误
 mov si, loading
 call print
 
-; xchg bx, bx; 断点
+;xchg bx, bx; 断点
 
 detect_memory:
     ; 将 ebx 置为 0

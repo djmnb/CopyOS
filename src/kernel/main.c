@@ -13,6 +13,9 @@ void kernel_init()
 {
     console_init();
     gdt_init();
-    task_init();
+    // task_init();
+    interrupt_init();
+    int i = 1 / 0;
+
     return;
 }

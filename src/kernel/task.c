@@ -21,7 +21,11 @@ void schedule()
 {
     task_t *current = running_task();
     // 切换进程
+
+    
     task_t *next = current == a ? b : a;
+
+
 
     task_switch(next);
 }
